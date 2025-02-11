@@ -1,19 +1,29 @@
-name: Run PHP Test Suite
-
 on:
-  workflow_call:  # Allows candidates to trigger this test from their repo
+  workflow_call: # This allows other repositories to trigger this workflow
+    inputs:
+      candidate_repo:
+        required: true
+        type: string
 
 jobs:
-  test:
+  run-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout candidate's code
-        uses: actions/checkout@v3
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+      - name: Checkout Candidate Code
+        uses: actions/checkout@v4
         with:
-          php-version: '8.1'
+          repository: ${{ inputs.candidate_repo }}
 
-      - name: Install PHPUnit
-        run: composer install && vendor/bin/phpunit tests
+      - name: Checkout Test Suite
+        uses: actions/checkout@v4
+        with:
+          repository: 00kaku/github-timeline-test-suite
+          path: test-suite
+
+      - name: Install Dependencies
+        run: |
+          composer install --working-dir=test-suite
+          composer install
+
+      - name: Run Tests
+        run: vendor/bin/phpunit --bootstrap test-suite/bootstrap.php test-suite/tests
