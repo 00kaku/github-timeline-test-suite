@@ -1,0 +1,17 @@
+{
+    "name": "akashsharma/github-timeline-test-suite",
+    "autoload": {
+        "psr-4": {
+            "Akashsharma\\GithubTimelineTestSuite\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "akash",
+            "email": "akash.sharma@rtcamp.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    }
+}
